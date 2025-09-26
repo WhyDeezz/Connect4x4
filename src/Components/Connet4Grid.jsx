@@ -32,6 +32,8 @@ export default function Grid()
     
 
     const [player , setplayer] = useState(1);
+
+    
     function checkifwin(matrix , player)
     {
         const directions = [
@@ -70,6 +72,7 @@ export default function Grid()
 
     }
   }
+  
 
     function putcoins(col)
     {
@@ -109,13 +112,12 @@ return (
             <button
               key={`${rowIndex}-${colIndex}`}
               onClick={() => putcoins(colIndex)}
-              
+              className="grids"
               style={{
                 width: "50px",
                 height: "50px",
                 border:"solid black 0px",
                 borderRadius:'50%',
-        
                 background: color,
                 
                 
