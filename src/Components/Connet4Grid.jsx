@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 export default function Grid()
 
 {
+    
     let [noofplayer , setnoofplayer] = useState(0) 
     useEffect(() => {
   const userInput = parseInt(prompt("Enter no of players") || "4", 10);
@@ -12,8 +13,22 @@ export default function Grid()
     
     
     
+    
+    const[prevgrid , setprevgrid] = useState([
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0],
 
-
+    ])
     const [grid , setgrid]  = useState([
         [0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0],
@@ -33,7 +48,8 @@ export default function Grid()
 
     const [player , setplayer] = useState(1);
 
-function checkifwin(matrix, player) {
+function checkifwin(matrix, player) 
+{
   const directions = [
     [-1, 0], [1, 0], [0, -1], [0, 1],
     [-1, -1], [-1, 1], [1, -1], [1, 1],
@@ -66,21 +82,29 @@ function checkifwin(matrix, player) {
   }
   return false;
 }
+function undo()
+{
+  setgrid(prevgrid)
+  setplayer(prev => prev-1)
   
 
-function putcoins(col) {
+}
+  
+
+function putcoins(col) 
+{
   const newGrid = grid.map(row => [...row]);
 
   for (let row = 11; row >= 0; row--) {
     if (newGrid[row][col] === 0) {
       const currentPlayer = (player % noofplayer) || noofplayer;
-      newGrid[row][col] = currentPlayer;
 
-     
+
+      newGrid[row][col] = currentPlayer;
+      setprevgrid(grid)
       setgrid(newGrid);
       setplayer(prev => prev + 1);
 
-      
       if (checkifwin(newGrid, currentPlayer)) {
         console.log('Player'+ player + 'Won!!!');
       }
@@ -118,13 +142,7 @@ return (
                 border:"solid black 0px",
                 borderRadius:'50%',
                 background: color,}}
-          
-              
-
-            
-                
-                
-              
+  
             />
           );
         })
@@ -134,7 +152,11 @@ return (
       <h1>Connect 4x4</h1>
       <h2>Current Player is </h2>
       <p>Player {(player % noofplayer) || noofplayer}</p> 
+      <button 
+      onClick={()=>undo()}
+      >Undo Move</button>
     </div>
+  
     
   </div>
 );
