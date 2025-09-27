@@ -17,13 +17,7 @@
 
 
 
-@media screen and (min-width: 800px){
-.grid-container > *:hover
-{
-  
-  background-color: #8C8C8C !important;
 
-}}
 .ejeee
 {
   font-family: 'Nunito', 'Helvetica Neue', sans-serif;
@@ -36,7 +30,7 @@
     width: calc(100% - 40px);
     max-width: 100%;
     grid-template-columns: repeat(12, 1fr);
-    grid-auto-rows: 20px; /* each row is now exactly 20px high */
+    grid-auto-rows: 20px; 
     box-sizing: border-box;
     padding: 20px;
 

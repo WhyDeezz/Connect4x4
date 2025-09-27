@@ -33,83 +33,82 @@ export default function Grid()
 
     const [player , setplayer] = useState(1);
 
-    
-    function checkifwin(matrix , player)
-    {
-        const directions = [
+function checkifwin(matrix, player) {
+  const directions = [
     [-1, 0], [1, 0], [0, -1], [0, 1],
-    [-1, -1], [-1, 1], [1, -1], [1, 1] 
+    [-1, -1], [-1, 1], [1, -1], [1, 1],
   ];
-      for (let r = 0 ; r < 12 ; r++)
-        {
-          for(let k = 0 ; k < 12 ; k++)
-            {
-              if (matrix[r][k] == player)
-              {
-                for (let [dr , dk] of directions)
-                  {
-                    let count = 1;
-                    let row = r + dr;
-                    let col = k + dk;
+
+  for (let r = 0; r < 12; r++) {
+    for (let c = 0; c < 12; c++) {
+      if (matrix[r][c] === player) {
+        for (let [dr, dc] of directions) {
+          let count = 1;
+          let row = r + dr;
+          let col = c + dc;
+
           while (
             row >= 0 && row < 12 &&
             col >= 0 && col < 12 &&
             matrix[row][col] === player
           ) {
             count++;
-            if ((count === 4)&& player != 0 ){
-              alert("player " + player+' Won!!')
-              return true; 
-              
+            if (count === 4) {
+              alert("Player " + player + " Won!!");
+              return true;
             }
             row += dr;
-            col += dk;
-              }
-                  }
-
-            }
+            col += dc;
+          }
         }
-
+      }
     }
   }
+  return false;
+}
   
 
-    function putcoins(col)
-    {
-        checkifwin(grid, (((player % noofplayer) || noofplayer)-1))
- 
-        
-        const newGrid = grid.map(row => [...row]);
-        for (let row = 11 ; row >= 0 ; row--)
-            {
-                if (newGrid[row][col] == 0)
-                    {
-                        newGrid[row][col] = ((player % noofplayer )|| noofplayer);
-                        setplayer(prev => prev + 1)
-                        setgrid(newGrid)
-                        console.log(((player % noofplayer )|| noofplayer)) 
-                        checkifwin(grid, (((player % noofplayer) || noofplayer)))
-                        break
+function putcoins(col) {
+  const newGrid = grid.map(row => [...row]);
 
-                    }
-                
-            }
+  for (let row = 11; row >= 0; row--) {
+    if (newGrid[row][col] === 0) {
+      const currentPlayer = (player % noofplayer) || noofplayer;
+      newGrid[row][col] = currentPlayer;
 
+     
+      setgrid(newGrid);
+      setplayer(prev => prev + 1);
+
+      
+      if (checkifwin(newGrid, currentPlayer)) {
+        console.log('Player'+ player + 'Won!!!');
+      }
+      break;
     }
+  }
+}
     
 return (      
   <div className="grid-container-container">
-    <div className="grid-container">
-      {grid.map((row, rowIndex) =>
+    <div className="grid-container" id = 'grid-container'>
+
+
+      {
+      grid.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
           let color = "#BBBBBB"; 
           if (cell === 1) color = "red";
-          else if (cell === 2) color = "yellow";
+          else if (cell === 2) color = "#FFCE1B";
           else if (cell === 3) color = "blue";
           else if (cell === 4) color = "green";
+        
+          
 
           return (
+            
             <button
+
               key={`${rowIndex}-${colIndex}`}
               onClick={() => putcoins(colIndex)}
               className="grids"
@@ -118,10 +117,14 @@ return (
                 height: "50px",
                 border:"solid black 0px",
                 borderRadius:'50%',
-                background: color,
+                background: color,}}
+          
+              
+
+            
                 
                 
-              }}
+              
             />
           );
         })
