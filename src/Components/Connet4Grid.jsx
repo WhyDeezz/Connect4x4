@@ -5,6 +5,7 @@ export default function Grid()
 {
     
     let [noofplayer , setnoofplayer] = useState(0) 
+    let [gridindex , setgridindex] = useState(0)
     useEffect(() => {
   const userInput = parseInt(prompt("Enter no of players") || "4", 10);
   setnoofplayer(userInput);
@@ -14,21 +15,7 @@ export default function Grid()
     
     
     
-    const[prevgrid , setprevgrid] = useState([
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-
-    ])
+    const[prevgrid , setprevgrid] = useState([])
     const [grid , setgrid]  = useState([
         [0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0],
@@ -70,7 +57,13 @@ function checkifwin(matrix, player)
           ) {
             count++;
             if (count === 4) {
-              alert("Player " + player + " Won!!");
+              let color = 'white'
+    
+          if (player === 1) color = "red";
+          else if (player === 2) color = "#FFCE1B";
+          else if (player === 3) color = "blue";
+          else if (player === 4) color = "green";
+              alert("Player " + color + " Won!!");
               return true;
             }
             row += dr;
@@ -84,9 +77,29 @@ function checkifwin(matrix, player)
 }
 function undo()
 {
-  setgrid(prevgrid)
+  if (gridindex == 0)
+  {
+    alert('Max Undo Reached!')
+    return(0)
+
+  }
+  setgrid(prevgrid[gridindex-1])
+  setgridindex(prev => prev-1)
   setplayer(prev => prev-1)
+  console.log(prevgrid.length)
   
+
+}
+function movefor()
+{
+  if (gridindex == prevgrid.length -1)
+  {
+    alert('Max Undo Reached!')
+    return(0)
+  }
+  setgrid(prevgrid[gridindex+1])
+  setgridindex(prev => prev+1)
+  setplayer(prev => prev+1)
 
 }
   
@@ -101,7 +114,9 @@ function putcoins(col)
 
 
       newGrid[row][col] = currentPlayer;
-      setprevgrid(grid)
+      setprevgrid(prev => [...prev ,grid ])
+      setgridindex(prev => prev+1)
+    
       setgrid(newGrid);
       setplayer(prev => prev + 1);
 
@@ -155,6 +170,9 @@ return (
       <button 
       onClick={()=>undo()}
       >Undo Move</button>
+            <button 
+      onClick={()=>movefor()}
+      >Move Forward</button>
     </div>
   
     
